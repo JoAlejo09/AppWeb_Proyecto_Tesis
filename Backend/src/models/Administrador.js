@@ -1,6 +1,5 @@
-// models/Administrador.js
-import { Schema, model } from 'mongoose';
-import bcrypt from 'bcryptjs';
+  import {Schema, model} from 'mongoose'
+import bcrypt from "bcryptjs"
 
 const administradorSchema = new Schema({
   nombre_completo: {
@@ -8,7 +7,7 @@ const administradorSchema = new Schema({
     required: true,
     trim: true
   },
-  correo: {
+  email: {
     type: String,
     required: true,
     unique: true,
@@ -42,17 +41,25 @@ const administradorSchema = new Schema({
   }
 }, {
   timestamps: true
-});
-//Metodos por defecto y personalizados
+})
 
-// Hash de contraseña antes de guardar
-
-administradorSchema.methods.encryptPassword = async function name(password) {
+// Método para cifrar el password del veterinario
+administradorSchema.methods.encrypPassword = async function(password){
     const salt = await bcrypt.genSalt(10)
     const passwordEncryp = await bcrypt.hash(password,salt)
     return passwordEncryp
 }
-administradorSchema.methods.createToken = function(){
+
+
+// Método para verificar si el password ingresado es el mismo de la BDD
+administradorSchema.methods.matchPassword = async function(password){
+    const response = await bcrypt.compare(password,this.password)
+    return response
+}
+
+
+// Método para crear un token 
+administradorSchema.methods.crearToken = function(){
     const tokenGenerado = this.token = Math.random().toString(36).slice(2)
     return tokenGenerado
 }

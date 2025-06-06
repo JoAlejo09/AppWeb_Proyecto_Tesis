@@ -2,7 +2,12 @@
 import bcrypt from "bcryptjs"
 
 const administradorSchema = new Schema({
-  nombre_completo: {
+  nombre: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  apellido: {
     type: String,
     required: true,
     trim: true
@@ -21,11 +26,6 @@ const administradorSchema = new Schema({
   telefono: {
     type: String,
     default: ''
-  },
-  rol: {
-    type: String,
-    enum: ['admin', 'psicologo', 'tecnico'],
-    default: 'admin'
   },
   token: {
     type: String,

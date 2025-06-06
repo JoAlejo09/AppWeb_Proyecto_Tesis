@@ -1,8 +1,40 @@
 import Administrador from "../models/Administrador.js"
-import {sendMailToRegister, sendMailToRecoveryPassword} from "../config/nodemailer.js"
+import jwt from 'jsonwebtoken'
+import {sendMailToActiveAccount} from "../config/nodemailer.js"
+
+const login = async (res,req)=>{
+    const {email, password} = req.body
+    if (Object.values(req.body).includes("")) return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"})
+    const usuarioBDD = await Administrador.findOne({email});
+    //Validacion si existe el usuario en la base de datos
+    if(!usuarioBDD) return res.status(400).json({msg:"Usuario No Encontrado"});
+    if (!usuarioBDD.confirmEmail){
+        const token = usuarioBDD.crearToken();
+        sendMailToActiveAccount(email,token);
+        return res.status(400).json({
+            msg:"Tu cuenta no esta activa. Revisa tu correo para activarla"
+        });
+    }
+
+    const validPassword = await usuarioBDD.matchPassword(password);
+    if (!validPassword) return res.status(400).json({ msg: "Contraseña incorrecta" });
+
+    const token = jwt.sign(
+        {id: usuarioBDD._id, email:usuarioBDD.email},
+        process.env.JWT_SECRET,
+        {expiresIn:'1d'}
+    );
+    
+    res.json({ token, usuario: { email: usuario.email, nombre: usuario.nombre } });
+}
 
 
-const registro = async (req,res)=>{
+
+
+//import {sendMailToRegister, sendMailToRecoveryPassword} from "../config/nodemailer.js"
+
+
+/*const registro = async (req,res)=>{
     const {email,password} = req.body
     if (Object.values(req.body).includes("")) return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"})
     const verificarEmailBDD = await Administrador.findOne({email})
@@ -51,11 +83,11 @@ const crearNuevoPassword = async (req,res)=>{
     administradorBDD.password = await administradorBDD.encrypPassword(password)
     await administradorBDD.save()
     res.status(200).json({msg:"Felicitaciones, ya puedes iniciar sesión con tu nuevo password"}) 
-}
+}*/
 export{
-    registro,
-    confirmarMail,
-    recuperarPassword,
-    comprobarTokenPassword,
-    crearNuevoPassword
+    //registro,
+    //confirmarMail,
+    //recuperarPassword,
+    //comprobarTokenPassword,
+    //crearNuevoPassword
 }

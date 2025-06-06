@@ -12,7 +12,32 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-const sendMailToRegister = (userMail, token) => {
+const sendMailToActiveAccount(userMail, token)=>{
+    let mailOptions = {
+        from: '"MentalAPP" <notificacion.mentalapp@epn.edu.ec>',
+        to: userMail,
+        subject: "Activacion Usuario Administrador",
+        html:`
+        <p>Hola Administrador,</p>
+        <p>Estas accediendo por primera vez a tu cuenta<a href="${process.env.URL_FRONTEND}activar/${token}">aqui</a> para activar tu cuenta</p>
+        <hr>
+        <footer>El equipo te da la bienvenida</footer>
+        `
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            console.log("Mensaje enviado satisfactoriamente: ", info.messageId);
+        }
+    })
+}
+
+
+
+
+/*const sendMailToRegister = (userMail, token) => {
 
     let mailOptions = {
         from: 'notificacion.mentalapp@epn.edu.com',
@@ -47,9 +72,9 @@ const sendMailToRecoveryPassword = async(userMail,token)=>{
     })
     console.log("Mensaje enviado satisfactoriamente: ", info.messageId);
 
-}
+}*/
 
 export {
-    sendMailToRegister,
-    sendMailToRecoveryPassword
+    //   sendMailToRegister,
+    // sendMailToRecoveryPassword
 }

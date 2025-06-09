@@ -12,7 +12,7 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-const sendMailToActiveAccount(userMail, token)=>{
+const sendMailToActiveAccount = (userMail, token)=>{
     let mailOptions = {
         from: '"MentalAPP" <notificacion.mentalapp@epn.edu.ec>',
         to: userMail,
@@ -37,7 +37,7 @@ const sendMailToActiveAccount(userMail, token)=>{
 
 
 
-/*const sendMailToRegister = (userMail, token) => {
+const sendMailToRegister = (userMail, token) => {
 
     let mailOptions = {
         from: 'notificacion.mentalapp@epn.edu.com',
@@ -57,6 +57,7 @@ const sendMailToActiveAccount(userMail, token)=>{
         }
     })
 }
+
 const sendMailToRecoveryPassword = async(userMail,token)=>{
     let info = await transporter.sendMail({
         from: 'admin@vet.com',
@@ -72,9 +73,10 @@ const sendMailToRecoveryPassword = async(userMail,token)=>{
     })
     console.log("Mensaje enviado satisfactoriamente: ", info.messageId);
 
-}*/
+}
 
 export {
-    //   sendMailToRegister,
-    // sendMailToRecoveryPassword
+    sendMailToActiveAccount,
+    sendMailToRegister,
+    sendMailToRecoveryPassword
 }

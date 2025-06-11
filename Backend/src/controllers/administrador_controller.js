@@ -5,10 +5,14 @@ import {sendMailToActiveAccount,sendMailToRegister, sendMailToRecoveryPassword} 
 
 const login = async (res,req)=>{
     const {email, password} = req.body
+
     if (Object.values(req.body).includes("")) return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"})
+    
     const usuarioBDD = await Administrador.findOne({email});
     //Validacion si existe el usuario en la base de datos
+    
     if(!usuarioBDD) return res.status(400).json({msg:"Usuario No Encontrado"});
+    
     if (!usuarioBDD.confirmEmail){
         const token = usuarioBDD.crearToken();
         sendMailToActiveAccount(email,token);

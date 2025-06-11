@@ -14,7 +14,7 @@ let transporter = nodemailer.createTransport({
 
 const sendMailToActiveAccount = (userMail, token)=>{
     let mailOptions = {
-        from: '"MentalAPP" <notificacion.mentalapp@epn.edu.ec>',
+        from: 'Sistema Salud Mental ESFOT" <no-reply@esfot.edu.ec>',
         to: userMail,
         subject: "Activacion Usuario Administrador",
         html:`
@@ -33,9 +33,6 @@ const sendMailToActiveAccount = (userMail, token)=>{
         }
     })
 }
-
-
-
 
 const sendMailToRegister = (userMail, token) => {
 

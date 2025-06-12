@@ -1,7 +1,8 @@
-import nodemailer from "nodemailer"
+/*import nodemailer from "nodemailer"
 import dotenv from 'dotenv'
 dotenv.config()
 
+*/
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     host: process.env.HOST_MAILTRAP,
@@ -11,6 +12,7 @@ let transporter = nodemailer.createTransport({
         pass: process.env.PASS_MAILTRAP,
     }
 });
+/*
 
 const sendMailToActiveAccount = (userMail, token)=>{
     let mailOptions = {
@@ -77,3 +79,4 @@ export {
     sendMailToRegister,
     sendMailToRecoveryPassword
 }
+*/

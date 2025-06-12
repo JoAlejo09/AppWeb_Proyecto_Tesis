@@ -1,5 +1,6 @@
 import Administrador from "../models/Administrador.js"
-import jwt from 'jsonwebtoken'
+
+/*import jwt from 'jsonwebtoken'
 import {sendMailToActiveAccount,sendMailToRegister, sendMailToRecoveryPassword} from "../config/nodemailer.js"
 
 
@@ -95,4 +96,4 @@ export{
     recuperarPassword,
     comprobarTokenPassword,
     crearNuevoPassword
-}
+}*/

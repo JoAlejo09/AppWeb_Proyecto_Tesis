@@ -1,4 +1,5 @@
-import {Router} from 'express'
+
+/*import {Router} from 'express'
 import { comprobarTokenPassword, confirmarMail, crearNuevoPassword, recuperarPassword, registro } from '../controllers/administrador_controller.js'
 const router = Router()
 
@@ -10,3 +11,4 @@ router.get('/recuperarpassword/:token',comprobarTokenPassword)
 router.post('/nuevopassword/:token',crearNuevoPassword)
 
 export default router
+*/

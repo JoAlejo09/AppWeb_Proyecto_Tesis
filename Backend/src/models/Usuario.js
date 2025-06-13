@@ -1,7 +1,7 @@
-  import {Schema, model} from 'mongoose'
+import {Schema, model} from 'mongoose'
 import bcrypt from "bcryptjs"
 
-const administradorSchema = new Schema({
+const usuarioSchema = new Schema({
   nombre: {
     type: String,
     required: true,
@@ -27,6 +27,11 @@ const administradorSchema = new Schema({
     type: String,
     default: ''
   },
+  rol:{
+    type: String,
+    enum: ['admin','paciente'],
+    default: 'paciente'
+  },
   token: {
     type: String,
     default: null
@@ -44,7 +49,7 @@ const administradorSchema = new Schema({
 })
 
 // Método para cifrar el password del veterinario
-administradorSchema.methods.encrypPassword = async function(password){
+usuarioSchema.methods.encrypPassword = async function(password){
     const salt = await bcrypt.genSalt(10)
     const passwordEncryp = await bcrypt.hash(password,salt)
     return passwordEncryp
@@ -52,15 +57,15 @@ administradorSchema.methods.encrypPassword = async function(password){
 
 
 // Método para verificar si el password ingresado es el mismo de la BDD
-administradorSchema.methods.matchPassword = async function(password){
+usuarioSchema.methods.matchPassword = async function(password){
     const response = await bcrypt.compare(password,this.password)
     return response
 }
 
 
 // Método para crear un token 
-administradorSchema.methods.crearToken = function(){
+usuarioSchema.methods.crearToken = function(){
     const tokenGenerado = this.token = Math.random().toString(36).slice(2)
     return tokenGenerado
 }
-export default model('Administrador', administradorSchema);
+export default model('Usuario', usuarioSchema);

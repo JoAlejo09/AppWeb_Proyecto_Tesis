@@ -1,8 +1,8 @@
-/*import nodemailer from "nodemailer"
+import nodemailer from "nodemailer"
 import dotenv from 'dotenv'
 dotenv.config()
 
-*/
+
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     host: process.env.HOST_MAILTRAP,
@@ -12,7 +12,6 @@ let transporter = nodemailer.createTransport({
         pass: process.env.PASS_MAILTRAP,
     }
 });
-/*
 
 const sendMailToActiveAccount = (userMail, token)=>{
     let mailOptions = {
@@ -21,7 +20,7 @@ const sendMailToActiveAccount = (userMail, token)=>{
         subject: "Activacion Usuario Administrador",
         html:`
         <p>Hola Administrador,</p>
-        <p>Estas accediendo por primera vez a tu cuenta<a href="${process.env.URL_FRONTEND}activar/${token}">aqui</a> para activar tu cuenta</p>
+        <p>Estas accediendo por primera vez a tu cuenta<a href="${process.env.URL_BACKEND}admin/activar/${token}">aqui</a> para activar tu cuenta</p>
         <hr>
         <footer>El equipo te da la bienvenida</footer>
         `
@@ -35,14 +34,30 @@ const sendMailToActiveAccount = (userMail, token)=>{
         }
     })
 }
+const sendMailToRecoveryPassword = async(userMail,token)=>{
+    let info = await transporter.sendMail({
+        from: 'Sistema@vet.com',
+        to: userMail,
+        subject: "Correo para reestablecer tu contraseña",
+        html: `
+        <h1>Mental App
+        <hr>
+        <a href=${process.env.URL_BACKEND}recuperarpassword/${token}>Clic para reestablecer tu contraseña</a>
+        <hr>
+        <footer>El equipo de SmartVET te da la más cordial bienvenida.</footer>
+        `   
+    })
+    console.log("Mensaje enviado satisfactoriamente: ", info.messageId);
 
-const sendMailToRegister = (userMail, token) => {
+}
+
+/*const sendMailToRegister = (userMail, token) => {
 
     let mailOptions = {
         from: 'notificacion.mentalapp@epn.edu.com',
         to: userMail,
         subject: "SmartVET -🐶 😺",
-        html: `<p>Hola, haz clic <a href="${process.env.URL_BACKEND}confirmar/${token}">aquí</a> para confirmar tu cuenta.</p>
+        html: `<p>Hola, haz clic <a href="${process.env.URL_BACKEND}admin/confirmar/${token}">aquí</a> para confirmar tu cuenta.</p>
         <hr>
         <footer>El equipo de SmartVET te da la más cordial bienvenida.</footer>
         `
@@ -57,26 +72,9 @@ const sendMailToRegister = (userMail, token) => {
     })
 }
 
-const sendMailToRecoveryPassword = async(userMail,token)=>{
-    let info = await transporter.sendMail({
-        from: 'admin@vet.com',
-        to: userMail,
-        subject: "Correo para reestablecer tu contraseña",
-        html: `
-        <h1>SmartVET - 🐶 😺</h1>
-        <hr>
-        <a href=${process.env.URL_BACKEND}recuperarpassword/${token}>Clic para reestablecer tu contraseña</a>
-        <hr>
-        <footer>El equipo de SmartVET te da la más cordial bienvenida.</footer>
-        `   
-    })
-    console.log("Mensaje enviado satisfactoriamente: ", info.messageId);
-
-}
-
+*/
 export {
     sendMailToActiveAccount,
-    sendMailToRegister,
+//    sendMailToRegister,
     sendMailToRecoveryPassword
 }
-*/

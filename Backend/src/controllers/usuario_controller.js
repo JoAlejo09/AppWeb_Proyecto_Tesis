@@ -59,7 +59,15 @@ const recuperarPassword = async(req,res)=>{
     res.status(200).json({msg:"Revisa tu correo electrónico para reestablecer tu cuenta"})
 }
 
+const comprobarTokenPassword = async (req,res)=>{
+    const {token} = req.params
+    const usuarioBDD = await Usuario.findOne({token})
+    if(usuarioBDD?.token !== req.params.token) return res.status(404).json({msg:"Lo sentimos, no se puede validar la cuenta"})
+    await usuarioBDD.save()
+    res.status(200).json({msg:"Token confirmado, ya puedes crear tu nuevo password"}) 
+}
 export{
     login,
-    recuperarPassword
+    recuperarPassword,
+    comprobarTokenPassword
 }

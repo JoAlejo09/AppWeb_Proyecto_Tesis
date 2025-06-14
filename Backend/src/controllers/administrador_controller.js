@@ -17,6 +17,7 @@ const registro = async (req,res)=>{
 //    res.status(200).json({msg:"Revisa tu correo electrónico para confirmar tu cuenta"})
     res.status(200).json({msg:"Usuario Creado"})
 }
+
 /*
 const login = async (req,res)=>{
     const {email, password} = req.body

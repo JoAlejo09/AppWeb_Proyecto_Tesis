@@ -43,6 +43,37 @@ const login = async (req,res)=>{
     await usuarioBDD.save()
 
 }
+const registrar = async (req, res) => {
+    const { nombre, apellido, email, password } = req.body;
+
+    // Validar campos vacíos
+    if (!nombre || !apellido || !email || !password) {
+        return res.status(400).json({ msg: "Todos los campos son obligatorios" });
+    }
+
+    // Verificar si el usuario ya existe
+    const existeUsuario = await Usuario.findOne({ email });
+    if (existeUsuario) {
+        return res.status(400).json({ msg: "El usuario ya existe" });
+    }
+
+    try {
+        // Crear nuevo usuario
+        const nuevoUsuario = new Usuario({ nombre, apellido, email, password });
+        nuevoUsuario.password = await nuevoUsuario.encrypPassword(password);
+
+        // Generar token de activación y enviar email
+        const token = nuevoUsuario.crearToken();
+        await nuevoUsuario.save();
+        await sendMailToActiveAccount(email, token);
+
+        res.status(200).json({ msg: "Usuario registrado, revisa tu correo para activar la cuenta" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: "Error en el registro" });
+    }
+};
+
 const recuperarPassword = async(req,res)=>{
     const {email} = req.body
     if (Object.values(req.body).includes("")) {
@@ -69,5 +100,6 @@ const comprobarTokenPassword = async (req,res)=>{
 export{
     login,
     recuperarPassword,
-    comprobarTokenPassword
+    comprobarTokenPassword,
+    registrar
 }

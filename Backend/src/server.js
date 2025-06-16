@@ -11,7 +11,7 @@ dotenv.config()
 export const handler = serverless(app);
 
 app.use(cors({
-  origin: process.env.URL_BACKEND || '*',
+  origin: process.env.URL_FRONTEND || '*',
   credentials: true
 }));
 

@@ -36,13 +36,13 @@ const sendMailToActiveAccount = (userMail, token)=>{
 }
 const sendMailToRecoveryPassword = async(userMail,token)=>{
     let info = await transporter.sendMail({
-        from: 'Sistema@vet.com',
+        from: 'Sistema Salud Mental ESFOT" <no-reply@esfot.edu.ec>',
         to: userMail,
         subject: "Correo para reestablecer tu contraseña",
         html: `
         <h1>Mental App
         <hr>
-        <a href=${process.env.URL_BACKEND}recuperarpassword/${token}>Clic para reestablecer tu contraseña</a>
+        <a href=${process.env.URL_FRONTEND}nuevo-password/${token}> Clic para reestablecer tu contraseña</a>
         <hr>
         <footer>El equipo de SmartVET te da la más cordial bienvenida.</footer>
         `   

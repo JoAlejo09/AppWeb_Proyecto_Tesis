@@ -8,8 +8,6 @@ import serverless from 'serverless-http';
 const app = express()
 dotenv.config()
 
-export const handler = serverless(app);
-
 /*app.use(cors({
   origin: process.env.URL_FRONTEND || '*',
   credentials: true

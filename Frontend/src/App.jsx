@@ -21,6 +21,8 @@ function App() {
         <Route path="/admin" element={<DashboardAdmin />} />
         <Route path="/recuperar" element={<Recuperar />} />
         <Route path="/nuevo-password/:token" element={<NuevoPassword />} />
+        <Route path="/admin" element={<DashboardAdmin />} />
+
       </Routes>
     </Router>
   );

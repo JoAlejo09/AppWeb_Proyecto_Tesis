@@ -34,8 +34,14 @@ const login = async (req,res)=>{
         } else{
             usuarioBDD.activo = true;
             return res.status(200).json({
-                msg:"Usuario Registrado Bienvenido"
-            });
+          msg: "Usuario registrado. Bienvenido",
+          usuario: {
+        nombre: usuarioBDD.nombre,
+        email: usuarioBDD.email,
+        rol: usuarioBDD.rol
+    }
+  //token: crearTokenJWT(usuarioBDD._id) // si usas JWT
+});
         }       
     }else{
             //CODIGO PARA PACIENTE 

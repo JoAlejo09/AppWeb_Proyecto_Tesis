@@ -3,11 +3,12 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React from "react";
-import { Link } from "react-router-dom"; // ← Importante para navegar
+import { Link } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-
+  const navigate = useNavigate();
   const onSubmit = async (data) => {
     try {
       const url = `${import.meta.env.VITE_BACKEND_URL}login`;
@@ -17,9 +18,14 @@ const Login = () => {
         position: "top-right",
         autoClose: 3000,
       });
-
-      // Aquí puedes redirigir según el rol
-      // Por ejemplo: navigate('/dashboard') si usas react-router
+      localStorage.setItem("usuario", JSON.stringify(response.data.usuario));
+   // localStorage.setItem("token", response.data.token); // solo si usas JWT
+      const rol = data.rol;
+      if(rol === "admin"){
+        navigate("/admin");
+      }else if(rol ==="paciente"){
+        //navigate ("/paciente");
+      }
     } catch (error) {
       const mensaje = error.response?.data?.msg || "Error al iniciar sesión";
       toast.error(mensaje, {

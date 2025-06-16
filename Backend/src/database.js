@@ -1,5 +1,5 @@
 // src/database.js
-import mongoose from 'mongoose';
+/*import mongoose from 'mongoose';
 
 mongoose.set('strictQuery', true);
 
@@ -22,9 +22,9 @@ const connection = async () => {
   }
 };
 
-export default connection;
+export default connection;*/
 
-/*import mongoose from 'mongoose'
+import mongoose from 'mongoose'
 
 mongoose.set('strictQuery', true)
 
@@ -37,4 +37,4 @@ const connection = async()=>{
     }
 }
 
-export default  connection*/
+export default  connection

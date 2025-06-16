@@ -10,13 +10,13 @@ dotenv.config()
 
 export const handler = serverless(app);
 
-/*app.use(cors({
+app.use(cors({
   origin: process.env.URL_FRONTEND || '*',
   credentials: true
-}));*/
+}));
 
-app.set('port',process.env.port || 3000)
-app.use(cors())
+/*app.set('port',process.env.port || 3000)
+app.use(cors())*/
 
 app.use(express.json())
 

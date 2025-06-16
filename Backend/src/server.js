@@ -8,13 +8,13 @@ import serverless from 'serverless-http';
 const app = express()
 dotenv.config()
 
-app.use(cors({
+/*app.use(cors({
   origin: process.env.URL_FRONTEND || '*',
   credentials: true
 }));
-/*
+*/
 app.set('port',process.env.port || 3000)
-app.use(cors())*/
+app.use(cors())
 
 app.use(express.json())
 

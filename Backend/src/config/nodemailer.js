@@ -20,7 +20,7 @@ const sendMailToActiveAccount = (userMail, token)=>{
         subject: "Activacion Usuario Administrador",
         html:`
         <p>Hola Administrador,</p>
-        <p>Estas accediendo por primera vez a tu cuenta<a href="${process.env.URL_BACKEND}admin/activar/${token}">aqui</a> para activar tu cuenta</p>
+        <p>Estas accediendo por primera vez a tu cuenta<a href="${process.env.URL_FRONTEND}admin/activar/${token}">aqui</a> para activar tu cuenta</p>
         <hr>
         <footer>El equipo te da la bienvenida</footer>
         `

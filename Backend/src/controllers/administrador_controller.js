@@ -48,9 +48,9 @@ const login = async (req,res)=>{
     res.json({ token, usuario: { email: usuario.email, nombre: usuario.nombre } });
 }*/
 const activarCuenta = async (req, res) =>{
-    const token = req.token
+    const token = req.params.token
+        console.log(token)
     const administradorBDD = await Usuario.findOne({token})
-
     if(!administradorBDD?.token){
         return res.status(404).json({msg:"El adminisitrador ya ha sido confirmado....."})
     }

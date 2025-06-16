@@ -3,25 +3,21 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React from "react";
-import { Link } from "react-router-dom"; // ← Importante para navegar
+import { Link } from "react-router-dom";
 
-const Login = () => {
+const Recuperar = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = async (data) => {
     try {
-      const url = `${import.meta.env.VITE_BACKEND_URL}login`;
+      const url = `${import.meta.env.VITE_BACKEND_URL}recuperarpassword`;
       const response = await axios.post(url, data);
-
-      toast.success(response.data.msg, {
+            toast.success(response.data.msg, {
         position: "top-right",
         autoClose: 3000,
       });
-
-      // Aquí puedes redirigir según el rol
-      // Por ejemplo: navigate('/dashboard') si usas react-router
     } catch (error) {
-      const mensaje = error.response?.data?.msg || "Error al iniciar sesión";
+      const mensaje = error.response?.data?.msg || "Error al enviar solicitud";
       toast.error(mensaje, {
         position: "top-right",
         autoClose: 3000,
@@ -32,14 +28,9 @@ const Login = () => {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h2 style={styles.title}>Inicio de Sesión</h2>
-        <p style={styles.subtitle}>Selecciona tu rol e ingresa tus datos</p>
+        <h2 style={styles.title}>Recuperar Contraseña</h2>
+        <p style={styles.subtitle}>Te enviaremos un enlace para restablecer tu contraseña</p>
         <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
-          <select {...register("rol", { required: true })} style={styles.select}>
-            <option value="admin">Administrador</option>
-            <option value="paciente">Paciente</option>
-          </select>
-
           <input
             type="email"
             placeholder="Correo electrónico"
@@ -48,24 +39,17 @@ const Login = () => {
           />
           {errors.email && <span style={styles.error}>El correo es obligatorio</span>}
 
-          <input
-            type="password"
-            placeholder="Contraseña"
-            {...register("password", { required: true })}
-            style={styles.input}
-          />
-          {errors.password && <span style={styles.error}>La contraseña es obligatoria</span>}
-
           <button type="submit" style={styles.button}>
-            Iniciar sesión
+            Enviar correo
           </button>
         </form>
 
-        <div style={{ marginTop: "15px" }}>
-          <Link to="/recuperar" style={styles.forgotPassword}>
-            ¿Olvidaste tu contraseña?
+        <p style={{ marginTop: "15px", fontSize: "14px" }}>
+          ¿Ya recordaste tu contraseña?{" "}
+          <Link to="/login" style={{ color: "#4CAF50", fontWeight: "bold" }}>
+            Volver al login
           </Link>
-        </div>
+        </p>
 
         <ToastContainer />
       </div>
@@ -108,12 +92,6 @@ const styles = {
     flexDirection: "column",
     gap: "15px",
   },
-  select: {
-    padding: "10px",
-    fontSize: "16px",
-    borderRadius: "8px",
-    border: "1px solid #ccc",
-  },
   input: {
     padding: "12px",
     fontSize: "16px",
@@ -134,12 +112,6 @@ const styles = {
     fontSize: "0.85rem",
     color: "red",
   },
-  forgotPassword: {
-    color: "#1976D2",
-    fontSize: "14px",
-    textDecoration: "none",
-    fontWeight: "bold",
-  },
 };
 
-export default Login;
+export default Recuperar;

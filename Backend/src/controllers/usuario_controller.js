@@ -64,6 +64,7 @@ const registrar = async (req, res) => {
 
         // Generar token de activación y enviar email
         const token = nuevoUsuario.crearToken();
+        nuevoUsuario.token = token
         await nuevoUsuario.save();
         await sendMailToActiveAccount(email, token);
 
@@ -73,7 +74,6 @@ const registrar = async (req, res) => {
         res.status(500).json({ msg: "Error en el registro" });
     }
 };
-
 const recuperarPassword = async(req,res)=>{
     const {email} = req.body
     if (Object.values(req.body).includes("")) {
@@ -89,7 +89,6 @@ const recuperarPassword = async(req,res)=>{
     await usuarioBDD.save()
     res.status(200).json({msg:"Revisa tu correo electrónico para reestablecer tu cuenta"})
 }
-
 const comprobarTokenPassword = async (req,res)=>{
     const {token} = req.params
     const usuarioBDD = await Usuario.findOne({token})
@@ -112,5 +111,6 @@ export{
     login,
     recuperarPassword,
     comprobarTokenPassword,
-    registrar
+    registrar,
+    crearNuevoPassword
 }

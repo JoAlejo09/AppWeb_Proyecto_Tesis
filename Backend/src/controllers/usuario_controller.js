@@ -97,6 +97,17 @@ const comprobarTokenPassword = async (req,res)=>{
     await usuarioBDD.save()
     res.status(200).json({msg:"Token confirmado, ya puedes crear tu nuevo password"}) 
 }
+const crearNuevoPassword = async (req,res)=>{
+    const{password,confirmpassword} = req.body
+    if (Object.values(req.body).includes("")) return res.status(404).json({msg:"Lo sentimos, debes llenar todos los campos"})
+    if(password != confirmpassword) return res.status(404).json({msg:"Lo sentimos, los passwords no coinciden"})
+    const usuarioBDD = await Usuario.findOne({token:req.params.token})
+    if(usuarioBDD?.token !== req.params.token) return res.status(404).json({msg:"Lo sentimos, no se puede validar la cuenta"})
+    usuarioBDD.token = null
+    usuarioBDD.password = await usuarioBDD.encrypPassword(password)
+    await usuarioBDD.save()
+    res.status(200).json({msg:"Felicitaciones, ya puedes iniciar sesión con tu nuevo password"}) 
+}
 export{
     login,
     recuperarPassword,

@@ -7,15 +7,4 @@ const router = Router()
 router.post('/registro',registro)
 router.get('/activar/:token', activarCuenta)
 
-
-
-
-
-
-//router.get('/confirmar/:token', confirmarMail)
-
-//router.post('/recuperarpassword',recuperarPassword)
-//router.get('/recuperarpassword/:token',comprobarTokenPassword)
-//router.post('/nuevopassword/:token',crearNuevoPassword)
-
 export default router

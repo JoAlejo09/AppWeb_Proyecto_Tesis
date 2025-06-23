@@ -60,7 +60,13 @@ const activarCuenta = async (req, res) =>{
     res.status(200).json({msg:"Token confirmado, ya puedes iniciar sesión"}) 
 
 }
+//DESARROLLO DE LA INFORMACION PARA PERFIL DE ADMINISTRADOR Y ENVIO DE TODOS LOS PARAMETROS
+const perfilAdmin = (req, res)=>{
+    const {token, confirmEmail,createdAt, updateAt, __v, ...datosPerfil} = req.usuario;
+    return res.status(200).json(datosPerfil)
+}
 export{
     registro,
-    activarCuenta
+    activarCuenta,
+    perfilAdmin
 }

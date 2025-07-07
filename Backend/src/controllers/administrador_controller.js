@@ -65,8 +65,43 @@ const perfilAdmin = (req, res)=>{
     const {token, confirmEmail,createdAt, updateAt, __v, ...datosPerfil} = req.usuario;
     return res.status(200).json(datosPerfil)
 }
+//ACTUALIZACION DEL PERFIL DE ADMINISTRADOR
+const actualizarPerfilAdmin = async (req, res) =>{
+    try {
+        const usuario = await Usuario.findById(req.usuario._id);
+        if(!usuario) return res.status(404).json({msg: "Administrador no encontrado"});
+        const {nombre, email, telefono, direccion} = req.body;
+
+        usuario.nombre = nombre || usuario.nombre;
+        usuario.email = email || usuario.email;
+        usuario.telefono = telefono || usuario.telefono;
+        usuario.direccion = direccion || usuario.direccion;
+        await usuario.save();
+        res.status(200).json({ msg: 'Perfil actualizado correctamente' });
+    } catch (error) {
+        res.status(500).json({ msg: 'Error al actualizar el perfil', error });
+    }
+};
+const cambiarPasswordAdmin = async (req, res) => {
+    const { passwordActual, nuevoPassword } = req.body;
+    if (!passwordActual || !nuevoPassword) {
+        return res.status(400).json({ msg: 'Debes ingresar ambos campos' });
+    }
+    
+    const usuario = await Usuario.findById(req.usuario._id);
+    const passwordCorrecto = await usuario.matchPassword(passwordActual);
+    if (!passwordCorrecto) return res.status(401).json({ msg: 'La contraseña actual es incorrecta' });
+    
+    usuario.password = await usuario.encrypPassword(nuevoPassword);
+    await usuario.save();
+    res.status(200).json({ msg: 'Contraseña actualizada con éxito' });
+};
+
 export{
     registro,
     activarCuenta,
-    perfilAdmin
+    perfilAdmin,
+    actualizarPerfilAdmin,
+    cambiarPasswordAdmin,
+
 }

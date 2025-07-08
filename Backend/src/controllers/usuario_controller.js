@@ -1,5 +1,6 @@
 import Usuario from "../models/Usuario.js"
 import {sendMailToActiveAccount, sendMailToRecoveryPassword} from "../config/nodemailer.js"
+import { crearTokenJWT } from "../middlewares/JWT.js"
 
 const login = async (req,res)=>{
     const {email,password,rol} = req.body
@@ -33,12 +34,15 @@ const login = async (req,res)=>{
             });
         } else{
             usuarioBDD.activo = true;
+            await usuarioBDD.save()
+            const token = crearTokenJWT(usuario._id, usuario.rol)
             return res.status(200).json({
           msg: "Usuario registrado. Bienvenido",
+          token,
           usuario: {
-        nombre: usuarioBDD.nombre,
-        email: usuarioBDD.email,
-        rol: usuarioBDD.rol
+            nombre: usuarioBDD.nombre,
+            email: usuarioBDD.email,
+            rol: usuarioBDD.rol
     }
   //token: crearTokenJWT(usuarioBDD._id) // si usas JWT
 });

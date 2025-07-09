@@ -22,7 +22,7 @@ const verificarTokenJWT = async (req, res, next) =>{
         if (!usuarioBDD){
             return res.status(404).json({msg: "Usuario no encontrado"})
         }
-        if(usuarioBDD !== rol){
+        if(rol !== "admin"){
             return res.status(401).json({msg: "Rol no autorizado"})
         }
         req.usuario = usuarioBDD

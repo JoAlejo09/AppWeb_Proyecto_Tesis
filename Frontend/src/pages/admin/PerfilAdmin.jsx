@@ -1,7 +1,7 @@
 import React, {useEffect,useState} from "react";
 import axios from "axios";
 import {useForm} from "react-hook-form"
-import storeAuth from "../../store/storeAuth";
+import storeAuth from "../../context/storeAuth.js";
 import {toast} from "react-toastify"
 
 const PerfilAdmin = () =>{

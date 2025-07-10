@@ -2,22 +2,25 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import React from "react";
 import { Link } from "react-router-dom";
 
 const Recuperar = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const onSubmit = async (data) => {
     try {
-      const url = `${import.meta.env.VITE_BACKEND_URL}recuperarpassword`;
+      const url = `${import.meta.env.VITE_BACKEND_URL}/recuperarpassword`;
       const response = await axios.post(url, data);
-            toast.success(response.data.msg, {
+      toast.success(response.data.msg || "Correo enviado correctamente", {
         position: "top-right",
         autoClose: 3000,
       });
     } catch (error) {
-      const mensaje = error.response?.data?.msg || "Error al enviar solicitud";
+      const mensaje = error.response?.data?.msg || "Error al enviar la solicitud";
       toast.error(mensaje, {
         position: "top-right",
         autoClose: 3000,
@@ -26,92 +29,61 @@ const Recuperar = () => {
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <h2 style={styles.title}>Recuperar Contraseña</h2>
-        <p style={styles.subtitle}>Te enviaremos un enlace para restablecer tu contraseña</p>
-        <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
-          <input
-            type="email"
-            placeholder="Correo electrónico"
-            {...register("email", { required: true })}
-            style={styles.input}
-          />
-          {errors.email && <span style={styles.error}>El correo es obligatorio</span>}
+    <div className="flex flex-col sm:flex-row h-screen">
+      <ToastContainer />
 
-          <button type="submit" style={styles.button}>
-            Enviar correo
-          </button>
-        </form>
+      {/* Sección del formulario */}
+      <div className="w-full sm:w-1/2 h-screen bg-white flex justify-center items-center">
+        <div className="md:w-4/5 sm:w-full">
+          <h1 className="text-3xl font-semibold mb-2 text-center uppercase text-gray-500">
+            ¡Olvidaste tu contraseña!
+          </h1>
+          <small className="text-gray-400 block my-4 text-sm text-center">
+            No te preocupes, te ayudamos a recuperarla.
+          </small>
 
-        <p style={{ marginTop: "15px", fontSize: "14px" }}>
-          ¿Ya recordaste tu contraseña?{" "}
-          <Link to="/login" style={{ color: "#4CAF50", fontWeight: "bold" }}>
-            Volver al login
-          </Link>
-        </p>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="mb-4">
+              <label className="mb-2 block text-sm font-semibold">Correo electrónico</label>
+              <input
+                type="email"
+                placeholder="Ingresa un correo válido"
+                className="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-2 px-3 text-gray-700"
+                {...register("email", { required: "El correo electrónico es obligatorio" })}
+              />
+              {errors.email && (
+                <p className="text-red-700 text-sm mt-1">{errors.email.message}</p>
+              )}
+            </div>
 
-        <ToastContainer />
+            <button
+              type="submit"
+              className="bg-gray-600 text-white border py-2 w-full rounded-xl mt-3 hover:scale-105 duration-300 hover:bg-gray-900"
+            >
+              Enviar correo
+            </button>
+          </form>
+
+          <div className="mt-6 text-xs border-b-2 py-4"></div>
+
+          <div className="mt-3 text-sm flex justify-between items-center">
+            <p>¿Ya recordaste tu contraseña?</p>
+            <Link
+              to="/login"
+              className="py-2 px-5 bg-gray-600 text-white border rounded-xl hover:scale-110 duration-300 hover:bg-gray-900"
+            >
+              Iniciar sesión
+            </Link>
+          </div>
+        </div>
       </div>
+
+      {/* Sección de imagen lateral (solo en pantallas grandes) */}
+      <div
+        className="w-full sm:w-1/2 h-1/3 sm:h-screen bg-[url('/freep.jpeg')] bg-no-repeat bg-cover bg-center sm:block hidden"
+      ></div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    minHeight: "100vh",
-    background: "linear-gradient(to right, #fce4ec, #e1f5fe)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "20px",
-  },
-  card: {
-    backgroundColor: "#ffffff",
-    padding: "40px",
-    borderRadius: "16px",
-    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.1)",
-    maxWidth: "400px",
-    width: "100%",
-    textAlign: "center",
-    fontFamily: "sans-serif",
-  },
-  title: {
-    fontSize: "1.8rem",
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: "10px",
-  },
-  subtitle: {
-    fontSize: "0.95rem",
-    color: "#666",
-    marginBottom: "25px",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "15px",
-  },
-  input: {
-    padding: "12px",
-    fontSize: "16px",
-    borderRadius: "8px",
-    border: "1px solid #ccc",
-  },
-  button: {
-    padding: "12px",
-    fontSize: "16px",
-    backgroundColor: "#4CAF50",
-    color: "white",
-    border: "none",
-    borderRadius: "8px",
-    cursor: "pointer",
-    transition: "background-color 0.3s ease",
-  },
-  error: {
-    fontSize: "0.85rem",
-    color: "red",
-  },
 };
 
 export default Recuperar;

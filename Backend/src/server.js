@@ -27,7 +27,7 @@ app.get('/',(req,res)=>{
 
 app.use('/admin',routerAdministrador)
 app.use('/admin/pacientes',routerAdminPaciente);
-app.use('',routerUsuario)
+app.use('/api/usuarios', routerUsuario)
 app.use('/paciente',routerPaciente)
 
 app.use((req,res)=>res.status(404).send("Endpoint no encontrado - 404"))

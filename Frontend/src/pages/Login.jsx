@@ -2,150 +2,110 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import React from "react";
-import { Link } from "react-router-dom"; 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+
   const onSubmit = async (data) => {
     try {
-      const url = `${import.meta.env.VITE_BACKEND_URL}login`;
+      const url = `${import.meta.env.VITE_BACKEND_URL}usuarios/login`;
       const response = await axios.post(url, data);
-
-      toast.success(response.data.msg, {
-        position: "top-right",
-        autoClose: 3000,
-      });
+      toast.success(response.data.msg || "Inicio de sesión exitoso");
       localStorage.setItem("usuario", JSON.stringify(response.data.usuario));
-   // localStorage.setItem("token", response.data.token); // solo si usas JWT
+
       const rol = data.rol;
-      if(rol === "admin"){
+      if (rol === "admin") {
         navigate("/admin");
-      }else if(rol ==="paciente"){
-        //navigate ("/paciente");
+      } else if (rol === "paciente") {
+        //navigate("/paciente");
       }
     } catch (error) {
       const mensaje = error.response?.data?.msg || "Error al iniciar sesión";
-      toast.error(mensaje, {
-        position: "top-right",
-        autoClose: 3000,
-      });
+      toast.error(mensaje);
     }
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <h2 style={styles.title}>Inicio de Sesión</h2>
-        <p style={styles.subtitle}>Selecciona tu rol e ingresa tus datos</p>
-        <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
-          <select {...register("rol", { required: true })} style={styles.select}>
-            <option value="admin">Administrador</option>
-            <option value="paciente">Paciente</option>
-          </select>
+    <div className="flex flex-col sm:flex-row h-screen">
+      <ToastContainer />
 
-          <input
-            type="email"
-            placeholder="Correo electrónico"
-            {...register("email", { required: true })}
-            style={styles.input}
-          />
-          {errors.email && <span style={styles.error}>El correo es obligatorio</span>}
+      {/* Imagen a la izquierda */}
+      <div className="w-full sm:w-1/2 h-1/3 sm:h-screen bg-[url('/bg-register.jpeg')] bg-no-repeat bg-cover bg-center sm:block hidden"></div>
 
-          <input
-            type="password"
-            placeholder="Contraseña"
-            {...register("password", { required: true })}
-            style={styles.input}
-          />
-          {errors.password && <span style={styles.error}>La contraseña es obligatoria</span>}
+      {/* Formulario */}
+      <div className="w-full sm:w-1/2 h-screen bg-white flex justify-center items-center">
+        <div className="md:w-4/5 sm:w-full">
+          <h1 className="text-3xl font-semibold mb-2 text-center uppercase text-gray-500">Iniciar sesión</h1>
+          <small className="text-gray-400 block my-4 text-sm text-center">Selecciona tu rol e ingresa tus datos</small>
 
-          <button type="submit" style={styles.button}>
-            Iniciar sesión
-          </button>
-        </form>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {/* Rol */}
+            <div className="mb-3">
+              <label className="block text-sm font-semibold mb-1">Rol</label>
+              <select
+                {...register("rol", { required: "Selecciona un rol" })}
+                className="block w-full rounded-md border border-gray-300 px-2 py-1 text-gray-600 focus:outline-none focus:ring-1 focus:ring-purple-700"
+              >
+                <option value="admin">Administrador</option>
+                <option value="paciente">Paciente</option>
+              </select>
+              {errors.rol && <p className="text-red-600 text-sm">{errors.rol.message}</p>}
+            </div>
 
-        <div style={{ marginTop: "15px" }}>
-          <Link to="/recuperar" style={styles.forgotPassword}>
-            ¿Olvidaste tu contraseña?
-          </Link>
+            {/* Correo */}
+            <div className="mb-3">
+              <label className="block text-sm font-semibold mb-1">Correo electrónico</label>
+              <input
+                type="email"
+                {...register("email", { required: "El correo es obligatorio" })}
+                placeholder="tucorreo@ejemplo.com"
+                className="block w-full rounded-md border border-gray-300 px-2 py-1 text-gray-600 focus:outline-none focus:ring-1 focus:ring-purple-700"
+              />
+              {errors.email && <p className="text-red-600 text-sm">{errors.email.message}</p>}
+            </div>
+
+            {/* Contraseña */}
+            <div className="mb-3 relative">
+              <label className="block text-sm font-semibold mb-1">Contraseña</label>
+              <input
+                type={showPassword ? "text" : "password"}
+                {...register("password", { required: "La contraseña es obligatoria" })}
+                placeholder="********"
+                className="block w-full rounded-md border border-gray-300 px-2 py-1 text-gray-600 focus:outline-none focus:ring-1 focus:ring-purple-700 pr-10"
+              />
+              {errors.password && <p className="text-red-600 text-sm">{errors.password.message}</p>}
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute top-7 right-3 text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
+
+            {/* Botón enviar */}
+            <button className="bg-purple-700 text-white w-full py-2 rounded-md mt-4 hover:bg-purple-900 transition">
+              Iniciar sesión
+            </button>
+          </form>
+
+          {/* Enlaces inferiores */}
+          <div className="mt-6 text-xs border-b-2 py-4"></div>
+
+          <div className="mt-3 text-sm flex justify-between items-center">
+            <p>¿Olvidaste tu contraseña?</p>
+            <Link to="/recuperar" className="py-2 px-4 bg-gray-500 text-white rounded-md hover:bg-gray-900 transition">
+              Recuperar
+            </Link>
+          </div>
         </div>
-
-        <ToastContainer />
       </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    minHeight: "100vh",
-    background: "linear-gradient(to right, #fce4ec, #e1f5fe)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "20px",
-  },
-  card: {
-    backgroundColor: "#ffffff",
-    padding: "40px",
-    borderRadius: "16px",
-    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.1)",
-    maxWidth: "400px",
-    width: "100%",
-    textAlign: "center",
-    fontFamily: "sans-serif",
-  },
-  title: {
-    fontSize: "1.8rem",
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: "10px",
-  },
-  subtitle: {
-    fontSize: "0.95rem",
-    color: "#666",
-    marginBottom: "25px",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "15px",
-  },
-  select: {
-    padding: "10px",
-    fontSize: "16px",
-    borderRadius: "8px",
-    border: "1px solid #ccc",
-  },
-  input: {
-    padding: "12px",
-    fontSize: "16px",
-    borderRadius: "8px",
-    border: "1px solid #ccc",
-  },
-  button: {
-    padding: "12px",
-    fontSize: "16px",
-    backgroundColor: "#4CAF50",
-    color: "white",
-    border: "none",
-    borderRadius: "8px",
-    cursor: "pointer",
-    transition: "background-color 0.3s ease",
-  },
-  error: {
-    fontSize: "0.85rem",
-    color: "red",
-  },
-  forgotPassword: {
-    color: "#1976D2",
-    fontSize: "14px",
-    textDecoration: "none",
-    fontWeight: "bold",
-  },
 };
 
 export default Login;

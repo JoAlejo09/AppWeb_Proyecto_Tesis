@@ -22,7 +22,7 @@ const login = async (req,res)=>{
     if(rol !== usuarioBDD.rol) return res.status(401).json({msg:"El usuario no tiene permiso para ese perfil...."})
     
     //Validacion por cada rol
-    if(usuarioBDD.rol === "admin"){
+    if(usuarioBDD.rol === 'admin'){
         //Validacion si la cuenta no ha sido activada
         if(!usuarioBDD.confirmEmail){
             const token = usuarioBDD.crearToken();
@@ -35,7 +35,7 @@ const login = async (req,res)=>{
         } else{
             usuarioBDD.activo = true;
             await usuarioBDD.save()
-            const token = crearTokenJWT(usuario._id, usuario.rol)
+            const token = crearTokenJWT(usuarioBDD._id, usuarioBDD.rol)
             return res.status(200).json({
           msg: "Usuario registrado. Bienvenido",
           token,

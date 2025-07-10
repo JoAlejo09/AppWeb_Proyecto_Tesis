@@ -1,5 +1,6 @@
 import Usuario from "../models/Usuario.js"
 import jwt from 'jsonwebtoken'
+import mongoose from "mongoose"
 
 
 //REGISTRO PERMITE AGREGAR USUARIOS PARA ADMINISTRADOR !SOLO ES PARA LA BASE DE DATOS !! NO PARA FRONTEND
@@ -67,31 +68,43 @@ const perfilAdmin = (req, res)=>{
 }
 //ACTUALIZACION DEL PERFIL DE ADMINISTRADOR
 const actualizarPerfilAdmin = async (req, res) =>{
-    try {
+    const {id} = req.params
+    if (Object.values(req.body).includes("")) return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"})
+    if( !mongoose.Types.ObjectId.isValid(id) ) return res.status(404).json({msg:`Lo sentimos, no existe el administrador ${id}`});
+    await Usuario.findByIdAndUpdate(id, req.body, { new: true })
+    return res.status(400).json({msg: "Usuario actualizado"})
+
+        /*    try {
         const usuario = await Usuario.findById(req.usuario._id);
         if(!usuario) return res.status(404).json({msg: "Administrador no encontrado"});
-        const {nombre, email, telefono, direccion} = req.body;
+        const {nombre, telefono, direccion} = req.body;
 
         usuario.nombre = nombre || usuario.nombre;
-        usuario.email = email || usuario.email;
         usuario.telefono = telefono || usuario.telefono;
         usuario.direccion = direccion || usuario.direccion;
         await usuario.save();
         res.status(200).json({ msg: 'Perfil actualizado correctamente' });
     } catch (error) {
         res.status(500).json({ msg: 'Error al actualizar el perfil', error });
-    }
+    }*/
 };
 const cambiarPasswordAdmin = async (req, res) => {
-    const { passwordActual, nuevoPassword } = req.body;
-    if (!passwordActual || !nuevoPassword) {
-        return res.status(400).json({ msg: 'Debes ingresar ambos campos' });
+    const {id} = req.params
+    const { passwordActual, nuevoPassword, confirmacionPassword} = req.body;
+    
+    const usuario = await Usuario.findById(id);
+
+    //campos vacios
+    if (!passwordActual || !nuevoPassword || !confirmacionPassword) {
+        return res.status(400).json({ msg: 'Debes ingresar todos campos' });
     }
-    
-    const usuario = await Usuario.findById(req.usuario._id);
+    //contraseña actual sea la correcta
     const passwordCorrecto = await usuario.matchPassword(passwordActual);
-    if (!passwordCorrecto) return res.status(401).json({ msg: 'La contraseña actual es incorrecta' });
+    if (!passwordCorrecto) return res.status(401).json({ msg: 'Las contraseña actual no es la correcta' });
     
+    //coincidencia de password nuevo
+    if(nuevoPassword !== confirmacionPassword) return res.status(401).json({msg:"La confirmación de la nueva contraseña es incorrecta"});
+ 
     usuario.password = await usuario.encrypPassword(nuevoPassword);
     await usuario.save();
     res.status(200).json({ msg: 'Contraseña actualizada con éxito' });

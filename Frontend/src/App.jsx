@@ -1,6 +1,9 @@
+// src/App.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
 import Main from "./pages/Main";
+import Informacion from "./pages/Informacion";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import DashboardAdmin from "./pages/DashboardAdmin";
@@ -13,9 +16,11 @@ import PerfilAdmin from "./pages/admin/PerfilAdmin";
 function App() {
   return (
     <Router>
+      <Navbar /> {/* Menú visible en todas las páginas */}
       <Routes>
         {/* Rutas Públicas */}
         <Route path="/" element={<Main />} />
+        <Route path="/informacion" element={<Informacion />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Register />} />
         <Route path="/admin/activar/:token" element={<Confirm />} />

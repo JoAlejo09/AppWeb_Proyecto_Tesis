@@ -8,7 +8,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import DashboardAdmin from "./pages/DashboardAdmin";
 import Confirm from "./pages/Confirmar";
-import Recuperar from "./pages/Recuperar"; 
+import Recuperar from "./pages/Recuperar";
 import NuevoPassword from "./pages/NuevoPassword";
 import RutaProtegida from "./components/RutaProtegida";
 import PerfilAdmin from "./pages/admin/PerfilAdmin";
@@ -18,7 +18,7 @@ function App() {
     <Router>
       <Navbar /> {/* Menú visible en todas las páginas */}
       <Routes>
-        {/* Rutas Públicas */}
+        {/* Páginas Públicas */}
         <Route path="/" element={<Main />} />
         <Route path="/informacion" element={<Informacion />} />
         <Route path="/login" element={<Login />} />
@@ -27,7 +27,7 @@ function App() {
         <Route path="/recuperar" element={<Recuperar />} />
         <Route path="/nuevo-password/:token" element={<NuevoPassword />} />
 
-        {/* Rutas Protegidas para Admin */}
+        {/* Páginas Privadas (solo admins autenticados) */}
         <Route
           path="/admin"
           element={

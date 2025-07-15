@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <header style={{ backgroundColor: "#ffffff", padding: "15px 30px", borderBottom: "1px solid #ddd" }}>
-      <h3 style={{ margin: 0 }}>Panel de Administrador</h3>
+    <header className="bg-white shadow-sm border-b border-gray-200">
+      <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link to="/" className="text-2xl font-bold text-purple-700">
           MentalAPP
         </Link>

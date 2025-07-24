@@ -2,6 +2,7 @@ import Usuario from "../models/Usuario.js"
 import {sendMailToActiveAccount, sendMailToRecoveryPassword} from "../config/nodemailer.js"
 import { crearTokenJWT } from "../middlewares/JWT.js"
 
+//Endpoint Iniciar Sesion
 const login = async (req,res)=>{
     const {email,password,rol} = req.body
     //Validacion campos formulario vacio
@@ -44,7 +45,6 @@ const login = async (req,res)=>{
             email: usuarioBDD.email,
             rol: usuarioBDD.rol
     }
-  //token: crearTokenJWT(usuarioBDD._id) // si usas JWT
 });
         }       
     }else{
@@ -53,6 +53,8 @@ const login = async (req,res)=>{
     await usuarioBDD.save()
 
 }
+
+//Endpoint para registrar usuario pero solo Pacientes
 const registrar = async (req, res) => {
     const { nombre, apellido, email, password } = req.body;
 

@@ -5,6 +5,7 @@ const router = Router()
 
 router.post("/registrar", registrar);
 router.post('/login',login)
+
 router.post('/recuperarpassword',recuperarPassword)
 router.get('/recuperarpassword/:token',comprobarTokenPassword)
 router.post('/nuevopassword/:token',crearNuevoPassword)

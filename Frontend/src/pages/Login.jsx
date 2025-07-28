@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useEffect } from "react";
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -28,6 +29,22 @@ const Login = () => {
       toast.error(mensaje);
     }
   };
+  const RedesSociales = ()=>{
+    const navigate = useNavigate();
+
+    useEffect(()=>{
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get("token");
+
+      if(token){
+        localStorage.setItem("token", token);
+        navigate("/paciente")
+      }else{
+        navigate("/login")
+      }
+    }, []);
+    return <div className="text-center mt-10">Iniciando Sesion...</div>
+  }
 
   return (
     <div className="flex flex-col sm:flex-row h-screen">
@@ -103,6 +120,23 @@ const Login = () => {
             </Link>
           </div>
         </div>
+      </div>
+      <div className="mt-6">
+        <p className="text-center text-gray-500 text-sm mb-2">O inicia sesión con</p>
+        <div className="flex flex-col gap-3">
+          <a href={`${import.meta.env.VITE_BACKEND_URL}auth/google`}
+          className="flex items-center justify-center gap-2 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
+          >
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" className="w-5 h-5"/>
+            Google
+          </a>
+          <a href={`${import.meta.env.VITE_BACKEND_URL}auth/facebook`}
+          className="flex items-center justify-center gap-2 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+          >
+            <img src="https://upload.wikimedia.org/wikipedia/commons/1/16/Facebook_icon.svg" alt="Facebook" className="w-5 h-5" />
+            Facebook
+            </a>
+            </div>
       </div>
     </div>
   );

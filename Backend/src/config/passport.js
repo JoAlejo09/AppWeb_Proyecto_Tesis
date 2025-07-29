@@ -52,3 +52,10 @@ async (accessToken, refreshToken, profile, done)=>{
         return done(error, false);    
     }
 }));
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+passport.deserializeUser(async(id, done) => {
+  const user = await Usuario.findById(id);
+  done(null, user);
+});
